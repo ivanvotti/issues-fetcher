@@ -11,7 +11,7 @@ defmodule Issues.CLI do
     |> IO.puts()
   end
 
-  def parse_args(args) do
+  defp parse_args(args) do
     options = OptionParser.parse(
       args,
       strict: [user: :string, project: :string, limit: :integer, help: :boolean],
@@ -32,11 +32,21 @@ defmodule Issues.CLI do
     end
   end
 
-  def process(:help) do
+  defp process(:help) do
     IO.puts("usage: issues -u <user> -p <project> [ -l <limit> | 4 ]")
     System.halt(0)
   end
-  def process({user, project, _limit}) do
+  defp process({user, project, _limit}) do
     Github.fetch_issues(user, project)
+    |> decode_response()
+  end
+
+  defp decode_response(response) do
+    case response do
+      {:ok, data} -> data
+      {:error, reason} ->
+        IO.puts("There was an error: #{reason}")
+        System.halt(2)
+    end
   end
 end

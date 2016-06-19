@@ -14,10 +14,13 @@ defmodule Issues.Mixfile do
   end
 
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :httpoison, :poison]]
   end
 
   defp deps do
-    []
+    [
+      {:httpoison, "~> 0.8"},
+      {:poison, "~> 2.1"}
+    ]
   end
 end
