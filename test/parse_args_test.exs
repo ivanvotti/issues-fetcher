@@ -1,4 +1,4 @@
-defmodule CLIParseArgsTest do
+defmodule ParseArgsTest do
   use ExUnit.Case
   doctest Issues
 

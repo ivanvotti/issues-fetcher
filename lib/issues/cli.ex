@@ -1,4 +1,6 @@
 defmodule Issues.CLI do
+  import Issues.TableFormatter, only: [print_table: 2]
+
   alias Issues.Github
 
   @default_issues_limit 4
@@ -7,11 +9,9 @@ defmodule Issues.CLI do
     args
     |> parse_args()
     |> process()
-    |> inspect()
-    |> IO.puts()
   end
 
-  defp parse_args(args) do
+  def parse_args(args) do
     options = OptionParser.parse(
       args,
       strict: [user: :string, project: :string, limit: :integer, help: :boolean],
@@ -32,15 +32,19 @@ defmodule Issues.CLI do
     end
   end
 
-  defp process(:help) do
+  def process(:help) do
     IO.puts("usage: issues -u <user> -p <project> [ -l <limit> | 4 ]")
     System.halt(0)
   end
-  defp process({user, project, limit}) do
+  def process({user, project, limit}) do
     Github.fetch_issues(user, project)
     |> decode_response()
     |> sort_issues()
     |> Enum.take(limit)
+    |> print_table(
+      fields: ["number", "created_at", "title"],
+      headers: ["Issue #", "Created at", "Title"]
+    )
   end
 
   defp decode_response(response) do
@@ -52,7 +56,7 @@ defmodule Issues.CLI do
     end
   end
 
-  defp sort_issues(issues) do
+  def sort_issues(issues) do
     Enum.sort(issues, &(&1["created_at"] <= &2["created_at"]))
   end
 end
