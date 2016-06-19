@@ -1,11 +1,14 @@
 defmodule Issues.CLI do
+  alias Issues.Github
+
   @default_issues_limit 4
 
   def main(args) do
     args
     |> parse_args()
+    |> process()
     |> inspect()
-    |> IO.puts
+    |> IO.puts()
   end
 
   def parse_args(args) do
@@ -27,5 +30,13 @@ defmodule Issues.CLI do
         {user, project, @default_issues_limit}
       _ -> :help
     end
+  end
+
+  def process(:help) do
+    IO.puts("usage: issues -u <user> -p <project> [ -l <limit> | 4 ]")
+    System.halt(0)
+  end
+  def process({user, project, _limit}) do
+    Github.fetch_issues(user, project)
   end
 end
