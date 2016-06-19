@@ -36,9 +36,11 @@ defmodule Issues.CLI do
     IO.puts("usage: issues -u <user> -p <project> [ -l <limit> | 4 ]")
     System.halt(0)
   end
-  defp process({user, project, _limit}) do
+  defp process({user, project, limit}) do
     Github.fetch_issues(user, project)
     |> decode_response()
+    |> sort_issues()
+    |> Enum.take(limit)
   end
 
   defp decode_response(response) do
@@ -48,5 +50,9 @@ defmodule Issues.CLI do
         IO.puts("There was an error: #{reason}")
         System.halt(2)
     end
+  end
+
+  defp sort_issues(issues) do
+    Enum.sort(issues, &(&1["created_at"] <= &2["created_at"]))
   end
 end
