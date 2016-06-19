@@ -1,4 +1,6 @@
 defmodule Issues.Github do
+  @github_url Application.get_env(:issues, :github_url)
+
   def fetch_issues(user, project) do
     issues_url(user, project)
     |> HTTPoison.get()
@@ -13,6 +15,6 @@ defmodule Issues.Github do
   end
 
   defp issues_url(user, project) do
-    "https://api.github.com/repos/#{user}/#{project}/issues"
+    "#{@github_url}/repos/#{user}/#{project}/issues"
   end
 end
