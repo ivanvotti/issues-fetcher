@@ -40,10 +40,10 @@ defmodule Issues.TableFormatter do
   We put `" | "` between each column.
 
   ## Example
-    iex> import Issues.TableFormatter
-    iex> column_widths = [2, 3, 4]
-    iex> row_format_for(column_widths)
-    "~-2s | ~-3s | ~-4s~n"
+      iex> import Issues.TableFormatter
+      iex> column_widths = [2, 3, 4]
+      iex> row_format_for(column_widths)
+      "~-2s | ~-3s | ~-4s~n"
   """
   def row_format_for(column_widths) do
     Enum.map_join(column_widths, " | ", fn(width) -> "~-#{width}s" end) <> "~n"
@@ -59,10 +59,10 @@ defmodule Issues.TableFormatter do
   between the columns goes.
 
   ## Example
-    iex> import Issues.TableFormatter
-    iex> column_widths = [2, 3, 4]
-    iex> separator_for(column_widths)
-    "---+-----+-----"
+      iex> import Issues.TableFormatter
+      iex> column_widths = [2, 3, 4]
+      iex> separator_for(column_widths)
+      "---+-----+-----"
   """
   def separator_for(column_widths) do
     Enum.map_join(column_widths, "-+-", &List.duplicate("-", &1))
