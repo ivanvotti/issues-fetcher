@@ -35,6 +35,16 @@ defmodule Issues.TableFormatter do
     end
   end
 
+  @doc """
+  Return a format string that hard codes the widths of a set of columns.
+  We put `" | "` between each column.
+
+  ## Example
+    iex> import Issues.TableFormatter
+    iex> column_widths = [2, 3, 4]
+    iex> row_format_for(column_widths)
+    "~-2s | ~-3s | ~-4s~n"
+  """
   def row_format_for(column_widths) do
     Enum.map_join(column_widths, " | ", fn(width) -> "~-#{width}s" end) <> "~n"
   end
@@ -43,6 +53,17 @@ defmodule Issues.TableFormatter do
     :io.format(format, row)
   end
 
+  @doc """
+  Generate the line that goes below the column headings.
+  It is a string of hyphens, with + signs where the vertical bar
+  between the columns goes.
+
+  ## Example
+    iex> import Issues.TableFormatter
+    iex> column_widths = [2, 3, 4]
+    iex> separator_for(column_widths)
+    "---+-----+-----"
+  """
   def separator_for(column_widths) do
     Enum.map_join(column_widths, "-+-", &List.duplicate("-", &1))
   end

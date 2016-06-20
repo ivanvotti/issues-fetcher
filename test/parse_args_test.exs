@@ -1,6 +1,5 @@
 defmodule ParseArgsTest do
   use ExUnit.Case
-  doctest Issues
 
   import Issues.CLI, only: [parse_args: 1]
 
